@@ -7,7 +7,19 @@
 - 成绩管理：录入、修改、查询学生成绩。
 - 统计功能：按学生的平均成绩进行排名，统计班级平均分、最高分以及最低分
 
-## 安装步骤
-1. 克隆仓库：
+## ubuntu系统安装步骤
+1. 打开终端克隆仓库：
    ```bash
    git clone https://github.com/fanfanfan-zz/2025-
+2. 切换到存放 1.cpp 的目录，使用命令
+   ```bash
+   cd /1.cpp的路径/
+3. 编译文件：
+   ```bash
+   gcc -o management 1.cpp 
+这里的“management”可以随便取名，相当于给该可执行文件起了个别名
+4. 运行文件：
+   ```bash
+   ./management 
+这里是 ./你所取的别名 ，注意中间不需空格
+

@@ -2,24 +2,24 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_STUDENTS 80 /*ÉèÖÃ×î´óÑ§ÉúÈİÁ¿²»³¬¹ı80*/
-#define MAX_NAME_LENGTH 50 /*ÉèÖÃÑ§ÉúÃû×ÖµÄ×î³¤³¤¶È*/
-#define MAX_COURSES 8 /*ÉèÖÃÃ¿¸öÑ§ÉúµÄ¿Î³ÌÊıÁ¿²»³¬¹ı8ÃÅ*/
+#define MAX_STUDENTS 80 /*è®¾ç½®æœ€å¤§å­¦ç”Ÿå®¹é‡ä¸è¶…è¿‡80*/
+#define MAX_NAME_LENGTH 50 /*è®¾ç½®å­¦ç”Ÿåå­—çš„æœ€é•¿é•¿åº¦*/
+#define MAX_COURSES 8 /*è®¾ç½®æ¯ä¸ªå­¦ç”Ÿçš„è¯¾ç¨‹æ•°é‡ä¸è¶…è¿‡8é—¨*/
 
-// ´´½¨Ñ§Éú½á¹¹Ìå
+// åˆ›å»ºå­¦ç”Ÿç»“æ„ä½“
 typedef struct {
-    int id;                      // Ñ§ºÅ
-    char name[MAX_NAME_LENGTH];  // ĞÕÃû
-    float scores[MAX_COURSES];   // ¿Î³Ì³É¼¨
-    int course_count;            // ¿Î³ÌÊıÁ¿
-    float average_score;         // Æ½¾ù³É¼¨
-    int rank;                    // ÅÅÃû
+    int id;                      // å­¦å·
+    char name[MAX_NAME_LENGTH];  // å§“å
+    float scores[MAX_COURSES];   // è¯¾ç¨‹æˆç»©
+    int course_count;            // è¯¾ç¨‹æ•°é‡
+    float average_score;         // å¹³å‡æˆç»©
+    int rank;                    // æ’å
 } Student;
 
-Student students[MAX_STUDENTS];  // Ñ§ÉúÊı×é
-int student_count = 0;           // µ±Ç°Ñ§ÉúÊıÁ¿
+Student students[MAX_STUDENTS];  // å­¦ç”Ÿæ•°ç»„
+int student_count = 0;           // å½“å‰å­¦ç”Ÿæ•°é‡
 
-// ¼ÆËãÄ³¸öÑ§ÉúµÄÆ½¾ù³É¼¨
+// è®¡ç®—æŸä¸ªå­¦ç”Ÿçš„å¹³å‡æˆç»©
 float calculate_average_score(Student* student) {
     float total_score = 0;
     for (int i = 0; i < student->course_count; i++) {
@@ -28,12 +28,12 @@ float calculate_average_score(Student* student) {
     return total_score / student->course_count;
 }
 
-// °´Æ½¾ù³É¼¨ÅÅĞò£¨´Ó¸ßµ½µÍ£©
+// æŒ‰å¹³å‡æˆç»©æ’åºï¼ˆä»é«˜åˆ°ä½ï¼‰
 void sort_students_by_average_score() {
     for (int i = 0; i < student_count - 1; i++) {
         for (int j = 0; j < student_count - i - 1; j++) {
             if (students[j].average_score < students[j + 1].average_score) {
-                // ½»»»Á½¸öÑ§ÉúµÄÎ»ÖÃ
+                // äº¤æ¢ä¸¤ä¸ªå­¦ç”Ÿçš„ä½ç½®
                 Student temp = students[j];
                 students[j] = students[j + 1];
                 students[j + 1] = temp;
@@ -42,87 +42,87 @@ void sort_students_by_average_score() {
     }
 }
 
-// ÉèÖÃÑ§ÉúµÄÅÅÃû£¨Ö§³Ö²¢ÁĞÅÅÃû£©
+// è®¾ç½®å­¦ç”Ÿçš„æ’åï¼ˆæ”¯æŒå¹¶åˆ—æ’åï¼‰
 void set_student_ranks() {
     for (int i = 0; i < student_count; i++) {
         if (i == 0) {
-            students[i].rank = 1;  // µÚÒ»Ãû
+            students[i].rank = 1;  // ç¬¬ä¸€å
         }
         else {
             if (students[i].average_score == students[i - 1].average_score) {
-                // Èç¹ûÆ½¾ù³É¼¨ÏàÍ¬£¬ÔòÅÅÃû²¢ÁĞ
+                // å¦‚æœå¹³å‡æˆç»©ç›¸åŒï¼Œåˆ™æ’åå¹¶åˆ—
                 students[i].rank = students[i - 1].rank;
             }
             else {
-                // ·ñÔòÅÅÃûÎªµ±Ç°Ë÷Òı + 1
+                // å¦åˆ™æ’åä¸ºå½“å‰ç´¢å¼• + 1
                 students[i].rank = i + 1;
             }
         }
     }
 }
 
-// Ìí¼ÓÑ§ÉúĞÅÏ¢
+// æ·»åŠ å­¦ç”Ÿä¿¡æ¯
 void add_student() {
     if (student_count >= MAX_STUDENTS) {
-        printf("Ñ§ÉúÊıÁ¿ÒÑ´ïµ½ÉÏÏŞ£¬ÎŞ·¨Ìí¼Ó¸ü¶àÑ§Éú£¬ÇëÁªÏµ¹ÜÀíÔ±ĞŞ¸Ä×î´óÑ§ÉúÈİÁ¿¡£\n");
+        printf("å­¦ç”Ÿæ•°é‡å·²è¾¾åˆ°ä¸Šé™ï¼Œæ— æ³•æ·»åŠ æ›´å¤šå­¦ç”Ÿï¼Œè¯·è”ç³»ç®¡ç†å‘˜ä¿®æ”¹æœ€å¤§å­¦ç”Ÿå®¹é‡ã€‚\n");
         return;
     }
 
     Student new_student;
-    printf("ÇëÊäÈëÑ§ºÅ: ");
+    printf("è¯·è¾“å…¥å­¦å·: ");
     scanf("%d", &new_student.id);
 
-    // ¼ì²éÑ§ºÅÊÇ·ñÖØ¸´
+    // æ£€æŸ¥å­¦å·æ˜¯å¦é‡å¤
     for (int i = 0; i < student_count; i++) {
         if (students[i].id == new_student.id) {
-            printf("Ñ§ºÅÖØ¸´£¬ÇëÖØĞÂÊäÈë¡£\n");
+            printf("å­¦å·é‡å¤ï¼Œè¯·é‡æ–°è¾“å…¥ã€‚\n");
             return;
         }
     }
 
-    // ÊäÈëÑ§ÉúĞÕÃû
-    printf("ÇëÊäÈëĞÕÃû: ");
+    // è¾“å…¥å­¦ç”Ÿå§“å
+    printf("è¯·è¾“å…¥å§“å: ");
     scanf("%s", new_student.name);
 
-    // ÊäÈë¿Î³ÌÊıÁ¿
-    printf("ÇëÊäÈë¿Î³ÌÊıÁ¿ (1µ½%d): ", MAX_COURSES);
+    // è¾“å…¥è¯¾ç¨‹æ•°é‡
+    printf("è¯·è¾“å…¥è¯¾ç¨‹æ•°é‡ (1åˆ°%d): ", MAX_COURSES);
     scanf("%d", &new_student.course_count);
     if (new_student.course_count < 1 || new_student.course_count > MAX_COURSES) {
-        printf("¿Î³ÌÊıÁ¿ÎŞĞ§£¬ÇëÊäÈë1µ½%dÖ®¼äµÄÊı×Ö¡£\n", MAX_COURSES);
+        printf("è¯¾ç¨‹æ•°é‡æ— æ•ˆï¼Œè¯·è¾“å…¥1åˆ°%dä¹‹é—´çš„æ•°å­—ã€‚\n", MAX_COURSES);
         return;
     }
 
-    // ÊäÈë¿Î³Ì³É¼¨
+    // è¾“å…¥è¯¾ç¨‹æˆç»©
     for (int i = 0; i < new_student.course_count; i++) {
-        printf("ÇëÊäÈëµÚ %d ÃÅ¿Î³ÌµÄ³É¼¨ (0µ½100): ", i + 1);
+        printf("è¯·è¾“å…¥ç¬¬ %d é—¨è¯¾ç¨‹çš„æˆç»© (0åˆ°100): ", i + 1);
         scanf("%f", &new_student.scores[i]);
         if (new_student.scores[i] < 0 || new_student.scores[i] > 100) {
-            printf("³É¼¨ÎŞĞ§£¬±ØĞëÔÚ0µ½100Ö®¼ä¡£\n");
+            printf("æˆç»©æ— æ•ˆï¼Œå¿…é¡»åœ¨0åˆ°100ä¹‹é—´ã€‚\n");
             return;
         }
     }
 
     students[student_count++] = new_student;
-    printf("Ñ§ÉúĞÅÏ¢Ìí¼Ó³É¹¦£¡\n");
+    printf("å­¦ç”Ÿä¿¡æ¯æ·»åŠ æˆåŠŸï¼\n");
 }
 
-//Í¨¹ıĞÕÃû»òÕßÑ§ºÅ²éÑ¯Ñ§Éú
+//é€šè¿‡å§“åæˆ–è€…å­¦å·æŸ¥è¯¢å­¦ç”Ÿ
 void inquire_student() {
     int choice;
-    printf("Ñ¡Ôñ²éÑ¯·½Ê½:\n");
-    printf("1. ¸ù¾İÑ§ºÅ²éÑ¯\n");
-    printf("2. ¸ù¾İĞÕÃû²éÑ¯\n");
-    printf("ÇëÊäÈëÄúµÄÑ¡Ôñ (1»ò2): ");
+    printf("é€‰æ‹©æŸ¥è¯¢æ–¹å¼:\n");
+    printf("1. æ ¹æ®å­¦å·æŸ¥è¯¢\n");
+    printf("2. æ ¹æ®å§“åæŸ¥è¯¢\n");
+    printf("è¯·è¾“å…¥æ‚¨çš„é€‰æ‹© (1æˆ–2): ");
     scanf("%d", &choice);
 
     if (choice == 1) {
         int id;
-        printf("ÇëÊäÈëÒª²éÑ¯µÄÑ§ºÅ: ");
+        printf("è¯·è¾“å…¥è¦æŸ¥è¯¢çš„å­¦å·: ");
         scanf("%d", &id);
 
         for (int i = 0; i < student_count; i++) {
             if (students[i].id == id) {
-                printf("Ñ§ºÅ: %d, ĞÕÃû: %s, ³É¼¨: ", students[i].id, students[i].name);
+                printf("å­¦å·: %d, å§“å: %s, æˆç»©: ", students[i].id, students[i].name);
                 for (int j = 0; j < students[i].course_count; j++) {
                     printf("%.2f ", students[i].scores[j]);
                 }
@@ -131,130 +131,130 @@ void inquire_student() {
             }
         }
 
-        printf("Î´ÕÒµ½¸ÃÑ§ÉúĞÅÏ¢¡£\n");
+        printf("æœªæ‰¾åˆ°è¯¥å­¦ç”Ÿä¿¡æ¯ã€‚\n");
     }
     else if (choice == 2) {
         char name[MAX_NAME_LENGTH];
-        printf("ÇëÊäÈëÒª²éÑ¯µÄĞÕÃû: ");
+        printf("è¯·è¾“å…¥è¦æŸ¥è¯¢çš„å§“å: ");
         scanf("%s", name);
 
-        int found = 0;  // ÓÃÓÚ±ê¼ÇÊÇ·ñÕÒµ½Ñ§Éú  
+        int found = 0;  // ç”¨äºæ ‡è®°æ˜¯å¦æ‰¾åˆ°å­¦ç”Ÿ  
         for (int i = 0; i < student_count; i++) {
             if (strcmp(students[i].name, name) == 0) {
-                printf("Ñ§ºÅ: %d, ĞÕÃû: %s, ³É¼¨: ", students[i].id, students[i].name);
+                printf("å­¦å·: %d, å§“å: %s, æˆç»©: ", students[i].id, students[i].name);
                 for (int j = 0; j < students[i].course_count; j++) {
                     printf("%.2f ", students[i].scores[j]);
                 }
                 printf("\n");
-                found = 1; // ÕÒµ½Ñ§Éú£¬±ê¼Ç  
+                found = 1; // æ‰¾åˆ°å­¦ç”Ÿï¼Œæ ‡è®°  
             }
         }
 
         if (!found) {
-            printf("Î´ÕÒµ½¸ÃÑ§ÉúĞÅÏ¢¡£\n");
+            printf("æœªæ‰¾åˆ°è¯¥å­¦ç”Ÿä¿¡æ¯ã€‚\n");
         }
     }
     else {
-        printf("ÎŞĞ§µÄÑ¡Ôñ£¬ÇëÖØĞÂÊäÈë¡£\n");
+        printf("æ— æ•ˆçš„é€‰æ‹©ï¼Œè¯·é‡æ–°è¾“å…¥ã€‚\n");
     }
 }
 
-// ĞŞ¸ÄÑ§ÉúĞÅÏ¢
+// ä¿®æ”¹å­¦ç”Ÿä¿¡æ¯
 void modify_student() {
     int id;
-    printf("ÇëÊäÈëÒªĞŞ¸ÄµÄÑ§ºÅ: ");
+    printf("è¯·è¾“å…¥è¦ä¿®æ”¹çš„å­¦å·: ");
     scanf("%d", &id);
 
     for (int i = 0; i < student_count; i++) {
         if (students[i].id == id) {
-            printf("ÇëÊäÈëĞÂµÄĞÕÃû: ");
+            printf("è¯·è¾“å…¥æ–°çš„å§“å: ");
             scanf("%s", students[i].name);
 
-            printf("ÇëÊäÈëĞÂµÄ¿Î³ÌÊıÁ¿ (1µ½%d): ", MAX_COURSES);
+            printf("è¯·è¾“å…¥æ–°çš„è¯¾ç¨‹æ•°é‡ (1åˆ°%d): ", MAX_COURSES);
             scanf("%d", &students[i].course_count);
             if (students[i].course_count < 1 || students[i].course_count > MAX_COURSES) {
-                printf("¿Î³ÌÊıÁ¿ÎŞĞ§£¬ÇëÊäÈë1µ½%dÖ®¼äµÄÊı×Ö¡£\n", MAX_COURSES);
+                printf("è¯¾ç¨‹æ•°é‡æ— æ•ˆï¼Œè¯·è¾“å…¥1åˆ°%dä¹‹é—´çš„æ•°å­—ã€‚\n", MAX_COURSES);
                 return;
             }
 
             for (int j = 0; j < students[i].course_count; j++) {
-                printf("ÇëÊäÈëµÚ %d ÃÅ¿Î³ÌµÄĞÂ³É¼¨ (0µ½100): ", j + 1);
+                printf("è¯·è¾“å…¥ç¬¬ %d é—¨è¯¾ç¨‹çš„æ–°æˆç»© (0åˆ°100): ", j + 1);
                 scanf("%f", &students[i].scores[j]);
                 if (students[i].scores[j] < 0 || students[i].scores[j] > 100) {
-                    printf("³É¼¨ÎŞĞ§£¬±ØĞëÔÚ0µ½100Ö®¼ä¡£\n");
+                    printf("æˆç»©æ— æ•ˆï¼Œå¿…é¡»åœ¨0åˆ°100ä¹‹é—´ã€‚\n");
                     return;
                 }
             }
 
-            printf("Ñ§ÉúĞÅÏ¢ĞŞ¸Ä³É¹¦£¡\n");
+            printf("å­¦ç”Ÿä¿¡æ¯ä¿®æ”¹æˆåŠŸï¼\n");
             return;
         }
     }
 
-    printf("Î´ÕÒµ½¸ÃÑ§ÉúĞÅÏ¢¡£\n");
+    printf("æœªæ‰¾åˆ°è¯¥å­¦ç”Ÿä¿¡æ¯ã€‚\n");
 }
 
-// É¾³ıÑ§ÉúĞÅÏ¢
+// åˆ é™¤å­¦ç”Ÿä¿¡æ¯
 void delete_student() {
     int id;
-    printf("ÇëÊäÈëÒªÉ¾³ıµÄÑ§ºÅ: ");
+    printf("è¯·è¾“å…¥è¦åˆ é™¤çš„å­¦å·: ");
     scanf("%d", &id);
 
     for (int i = 0; i < student_count; i++) {
         if (students[i].id == id) {
-            // ½«×îºóÒ»¸öÑ§ÉúĞÅÏ¢ÒÆ¶¯µ½±»É¾³ıµÄÎ»ÖÃ
+            // å°†æœ€åä¸€ä¸ªå­¦ç”Ÿä¿¡æ¯ç§»åŠ¨åˆ°è¢«åˆ é™¤çš„ä½ç½®
             students[i] = students[student_count - 1];
             student_count--;
-            printf("Ñ§ÉúĞÅÏ¢É¾³ı³É¹¦£¡\n");
+            printf("å­¦ç”Ÿä¿¡æ¯åˆ é™¤æˆåŠŸï¼\n");
             return;
         }
     }
 
-    printf("Î´ÕÒµ½¸ÃÑ§ÉúĞÅÏ¢¡£\n");
+    printf("æœªæ‰¾åˆ°è¯¥å­¦ç”Ÿä¿¡æ¯ã€‚\n");
 }
 
-// ÏÔÊ¾ËùÓĞÑ§ÉúĞÅÏ¢£¨°´Æ½¾ù³É¼¨ÅÅĞò£©
+// æ˜¾ç¤ºæ‰€æœ‰å­¦ç”Ÿä¿¡æ¯ï¼ˆæŒ‰å¹³å‡æˆç»©æ’åºï¼‰
 void list_students() {
-    //¼ì²éÑ§ÉúÊıÁ¿ÊÇ·ñÎª0
+    //æ£€æŸ¥å­¦ç”Ÿæ•°é‡æ˜¯å¦ä¸º0
     if (student_count == 0) {
-        printf("Ã»ÓĞÑ§ÉúĞÅÏ¢¿ÉÏÔÊ¾¡£\n");
+        printf("æ²¡æœ‰å­¦ç”Ÿä¿¡æ¯å¯æ˜¾ç¤ºã€‚\n");
         return;
     }
 
-    // ¼ÆËãÃ¿¸öÑ§ÉúµÄÆ½¾ù³É¼¨
+    // è®¡ç®—æ¯ä¸ªå­¦ç”Ÿçš„å¹³å‡æˆç»©
     for (int i = 0; i < student_count; i++) {
         students[i].average_score = calculate_average_score(&students[i]);
     }
 
-    // °´Æ½¾ù³É¼¨ÅÅĞò£¨µ÷ÓÃº¯Êısort_students_by_average_score£©
+    // æŒ‰å¹³å‡æˆç»©æ’åºï¼ˆè°ƒç”¨å‡½æ•°sort_students_by_average_scoreï¼‰
     sort_students_by_average_score();
 
-    // ÉèÖÃÑ§ÉúµÄÅÅÃû£¨µ÷ÓÃº¯Êıset_student_ranks£©
+    // è®¾ç½®å­¦ç”Ÿçš„æ’åï¼ˆè°ƒç”¨å‡½æ•°set_student_ranksï¼‰
     set_student_ranks();
 
-    // ´òÓ¡Ñ§ÉúĞÅÏ¢
+    // æ‰“å°å­¦ç”Ÿä¿¡æ¯
     for (int i = 0; i < student_count; i++) {
-        printf("ÅÅÃû: %d, Ñ§ºÅ: %d, ĞÕÃû: %s, ³É¼¨: [", students[i].rank, students[i].id, students[i].name);
+        printf("æ’å: %d, å­¦å·: %d, å§“å: %s, æˆç»©: [", students[i].rank, students[i].id, students[i].name);
         for (int j = 0; j < students[i].course_count; j++) {
-            printf("¿Î³Ì%d: %.2f", j + 1, students[i].scores[j]);
+            printf("è¯¾ç¨‹%d: %.2f", j + 1, students[i].scores[j]);
             if (j < students[i].course_count - 1) {
                 printf(", ");
             }
         }
-        printf("], Æ½¾ù³É¼¨: %.2f\n", students[i].average_score);
+        printf("], å¹³å‡æˆç»©: %.2f\n", students[i].average_score);
     }
 }
 
-// Í³¼Æ¹¦ÄÜ£¨¼ÆËãÈ«°à×î¸ß·Ö£¬×îµÍ·Ö£¬°à¼¶Æ½¾ù³É¼¨£©
+// ç»Ÿè®¡åŠŸèƒ½ï¼ˆè®¡ç®—å…¨ç­æœ€é«˜åˆ†ï¼Œæœ€ä½åˆ†ï¼Œç­çº§å¹³å‡æˆç»©ï¼‰
 void statistics() {
     if (student_count == 0) {
-        printf("Ã»ÓĞÑ§ÉúĞÅÏ¢¿ÉÍ³¼Æ¡£\n");
+        printf("æ²¡æœ‰å­¦ç”Ÿä¿¡æ¯å¯ç»Ÿè®¡ã€‚\n");
         return;
     }
 
     float total = 0;
-    float max_score = -1; /*ÓÃÓÚ´æ´¢×î¸ß³É¼¨*/
-    float min_score = 101; /*ÓÃÓÚ´æ´¢×îµÍ³É¼¨*/
+    float max_score = -1; /*ç”¨äºå­˜å‚¨æœ€é«˜æˆç»©*/
+    float min_score = 101; /*ç”¨äºå­˜å‚¨æœ€ä½æˆç»©*/
 
     for (int i = 0; i < student_count; i++) {
         for (int j = 0; j < students[i].course_count; j++) {
@@ -269,15 +269,15 @@ void statistics() {
     }
 
     float average = total / (student_count * students[0].course_count);
-    printf("È«°àÆ½¾ù³É¼¨: %.2f\n", average);
-    printf("È«°à×î¸ß·Ö: %.2f\n", max_score);
-    printf("È«°à×îµÍ·Ö: %.2f\n", min_score);
+    printf("å…¨ç­å¹³å‡æˆç»©: %.2f\n", average);
+    printf("å…¨ç­æœ€é«˜åˆ†: %.2f\n", max_score);
+    printf("å…¨ç­æœ€ä½åˆ†: %.2f\n", min_score);
 }
-// ±£´æÑ§ÉúĞÅÏ¢µ½ÎÄ¼ş
+// ä¿å­˜å­¦ç”Ÿä¿¡æ¯åˆ°æ–‡ä»¶
 void save_to_file() {
     FILE* file = fopen("students.txt", "w");
     if (file == NULL) {
-        printf("ÎÄ¼ş´ò¿ªÊ§°Ü£¡\n");
+        printf("æ–‡ä»¶æ‰“å¼€å¤±è´¥ï¼\n");
         return;
     }
 
@@ -290,14 +290,14 @@ void save_to_file() {
     }
 
     fclose(file);
-    printf("Ñ§ÉúĞÅÏ¢ÒÑ±£´æµ½ÎÄ¼ş¡£\n");
+    printf("å­¦ç”Ÿä¿¡æ¯å·²ä¿å­˜åˆ°æ–‡ä»¶ã€‚\n");
 }
 
-// ´ÓÎÄ¼ş¼ÓÔØÑ§ÉúĞÅÏ¢
+// ä»æ–‡ä»¶åŠ è½½å­¦ç”Ÿä¿¡æ¯
 void load_from_file() {
     FILE* file = fopen("students.txt", "r");
     if (file == NULL) {
-        printf("ÎÄ¼ş´ò¿ªÊ§°Ü£¡\n");
+        printf("æ–‡ä»¶æ‰“å¼€å¤±è´¥ï¼\n");
         return;
     }
 
@@ -310,24 +310,24 @@ void load_from_file() {
     }
 
     fclose(file);
-    printf("Ñ§ÉúĞÅÏ¢ÒÑ´ÓÎÄ¼ş¼ÓÔØ¡£\n");
+    printf("å­¦ç”Ÿä¿¡æ¯å·²ä»æ–‡ä»¶åŠ è½½ã€‚\n");
 }
 
-// Ö÷²Ëµ¥
+// ä¸»èœå•
 void menu() {
     int choice;
     while (1) {
-        printf("\nÑ§Éú³É¼¨¹ÜÀíÏµÍ³\n");
-        printf("1. Ìí¼ÓÑ§ÉúĞÅÏ¢\n");
-        printf("2. ²éÑ¯Ñ§ÉúĞÅÏ¢\n");
-        printf("3. ĞŞ¸ÄÑ§ÉúĞÅÏ¢\n");
-        printf("4. É¾³ıÑ§ÉúĞÅÏ¢\n");
-        printf("5. ÏÔÊ¾ËùÓĞÑ§ÉúĞÅÏ¢\n");
-        printf("6. Í³¼Æ¹¦ÄÜ\n");
-        printf("7. ±£´æµ½ÎÄ¼ş\n");
-        printf("8. ´ÓÎÄ¼ş¼ÓÔØ\n");
-        printf("0. ÍË³ö\n");
-        printf("ÇëÊäÈëÄúµÄÑ¡Ôñ: ");
+        printf("\nå­¦ç”Ÿæˆç»©ç®¡ç†ç³»ç»Ÿ\n");
+        printf("1. æ·»åŠ å­¦ç”Ÿä¿¡æ¯\n");
+        printf("2. æŸ¥è¯¢å­¦ç”Ÿä¿¡æ¯\n");
+        printf("3. ä¿®æ”¹å­¦ç”Ÿä¿¡æ¯\n");
+        printf("4. åˆ é™¤å­¦ç”Ÿä¿¡æ¯\n");
+        printf("5. æ˜¾ç¤ºæ‰€æœ‰å­¦ç”Ÿä¿¡æ¯\n");
+        printf("6. ç»Ÿè®¡åŠŸèƒ½\n");
+        printf("7. ä¿å­˜åˆ°æ–‡ä»¶\n");
+        printf("8. ä»æ–‡ä»¶åŠ è½½\n");
+        printf("0. é€€å‡º\n");
+        printf("è¯·è¾“å…¥æ‚¨çš„é€‰æ‹©: ");
         scanf("%d", &choice);
 
         switch (choice) {
@@ -340,7 +340,7 @@ void menu() {
         case 7: save_to_file(); break;
         case 8: load_from_file(); break;
         case 0: exit(0);
-        default: printf("ÎŞĞ§µÄÑ¡Ôñ£¬ÇëÖØĞÂÊäÈë¡£\n");
+        default: printf("æ— æ•ˆçš„é€‰æ‹©ï¼Œè¯·é‡æ–°è¾“å…¥ã€‚\n");
         }
     }
 }
