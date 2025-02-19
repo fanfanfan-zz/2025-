@@ -1,0 +1,7 @@
+<launch>
+
+
+  <node pkg="ssr_pkg_1" type="wang_node" name="wang_node" launch-prefix="gnome-terminal --"/>
+  <node pkg="ssr_pkg_1" type="ma_node" name="ma_node" launch-prefix="gnome-terminal --"/>
+
+</launch>

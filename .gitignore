@@ -1,0 +1,21 @@
+# 忽略 build 和 devel 目录
+/build/
+/devel/
+
+# 忽略编译生成的文件
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.o
+*.a
+
+# 忽略日志文件
+*.log
+
+# 忽略 IDE 配置文件
+.vscode/
+.idea/
+
+# 忽略其他临时文件
+*~
