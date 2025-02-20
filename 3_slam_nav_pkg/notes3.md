@@ -1,0 +1,7 @@
+该软件包是我用与学习slam建图工具与movebase导航的软件包，包括gmapping、hector_mapping、move_base、amcl、rviz等软件包。
+包含三个launch文件：一个是启动gmapping的launch文件，一个是启动hector_mapping的launch文件，一个是启动move_base与amcl的launch文件。
+
+学习了gmapping和hector_mapping的安装，以及如何使用launch文件启动这两个软件包，还有如何保存地图，如何使用可视化工具rviz查看地图
+学习了move_base导航算法以及 amcl定位算法 及其安装与启动
+学习了move_base中的全局代价地图和局部代价地图并使用rviz进行显示
+学习gmapping、hector_mapping、move_base、代价地图等的参数设置

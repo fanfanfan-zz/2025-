@@ -1,0 +1,23 @@
+<launch>
+
+    <include file="$(find wpr_simulation)/launch/wpb_stage_robocup.launch" />
+
+    <node pkg="move_base" type="move_base" name="move_base">
+    <rosparam file="$(find wpb_home_tutorials)/nav_lidar/costmap_common_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find wpb_home_tutorials)/nav_lidar/costmap_common_params.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find wpb_home_tutorials)/nav_lidar/global_costmap_params.yaml" command="load" />
+        <rosparam file="$(find wpb_home_tutorials)/nav_lidar/local_costmap_params.yaml" command="load" />
+        <param name="base_global_planner" value="global_planner/GlobalPlanner" /> 
+        <param name="base_local_planner" value="wpbh_local_planner/WpbhLocalPlanner" />
+    </node>
+
+    <node pkg="map_server" type="map_server" name="map_server" args="$(find wpr_simulation)/maps/map.yaml"/>
+
+    <node pkg="amcl" type="amcl" name="amcl"/>
+
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find 3_slam_nav_pkg)/rviz/nav1.rviz" />
+
+
+
+
+</launch>

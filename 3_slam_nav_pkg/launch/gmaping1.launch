@@ -1,0 +1,13 @@
+<launch>
+
+    <include file="$(find wpr_simulation)/launch/wpb_stage_robocup.launch" />
+
+    <node pkg="gmaping" type="gmapping" name="gmapping"/>
+
+    <node pkg="rviz" type="rviz" name="rviz" />
+
+    <node pkg="rqt_robot_steering" type="rqt_robot_steering" name="rqt_robot_steering"/>
+
+
+
+</launch>
